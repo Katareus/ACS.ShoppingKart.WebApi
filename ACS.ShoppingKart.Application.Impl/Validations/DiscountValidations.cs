@@ -5,7 +5,7 @@ namespace ACS.ShoppingKart.Application.Impl.Validations
 {
     public class DiscountValidations
     {
-        public static void DiscountRequestValidation(DiscountRequest discountRequest)
+        public static void DiscountRequestValidation(PromocodeRequest discountRequest)
         {
             if (string.IsNullOrEmpty(discountRequest?.OrderId))
             {

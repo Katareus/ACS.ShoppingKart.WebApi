@@ -7,12 +7,12 @@ namespace ACS.ShoppingKart.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DiscountController : ControllerBase
+    public class PromocodeController : ControllerBase
     {
-        private readonly ILogger<DiscountController> _logger;
+        private readonly ILogger<PromocodeController> _logger;
         private readonly IPromocodeService _promocodeService;
 
-        public DiscountController(ILogger<DiscountController> logger, IPromocodeService promocodeService)
+        public PromocodeController(ILogger<PromocodeController> logger, IPromocodeService promocodeService)
         {
             _logger = logger;
             _promocodeService = promocodeService;
@@ -20,9 +20,9 @@ namespace ACS.ShoppingKart.WebApi.Controllers
 
         [HttpPost]
         [Route("Apply")]
-        public IActionResult Apply(DiscountRequest discountRequest)
+        public IActionResult Apply(PromocodeRequest discountRequest)
         {
-            _logger.LogDebug($"Starting Discount/Apply endpoint method with promocode {discountRequest?.Promocode}");
+            _logger.LogDebug($"Starting Promocode/Apply endpoint method with promocode {discountRequest?.Promocode}");
 
             _promocodeService.Apply(discountRequest);
 

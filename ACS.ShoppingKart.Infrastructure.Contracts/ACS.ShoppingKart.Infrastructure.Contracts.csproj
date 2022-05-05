@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="RepositoryContracts\" />
+    <ProjectReference Include="..\ACS.ShoppingKart.Domain\ACS.ShoppingKart.Domain.csproj" />
   </ItemGroup>
 
 </Project>

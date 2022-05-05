@@ -4,6 +4,6 @@ namespace ACS.ShoppingKart.Application.Contracts.ServiceContracts
 {
     public interface IPromocodeService
     {
-        void Apply(DiscountRequest discountRequest);
+        void Apply(PromocodeRequest promocodeRequest);
     }
 }

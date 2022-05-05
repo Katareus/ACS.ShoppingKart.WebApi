@@ -1,10 +1,11 @@
+using ACS.ShoppingKart.Application.Contracts.Exceptions;
 using ACS.ShoppingKart.Application.Contracts.Models;
 using ACS.ShoppingKart.Application.Impl.Services;
 using ACS.ShoppingKart.Domain.Entities;
 using ACS.ShoppingKart.Domain.Enums;
 using ACS.ShoppingKart.Infrastructure.Contracts.RepositoryContracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NMock;
+using Moq;
 using System;
 
 namespace ACS.ShoppingKart.Application.Impl.UnitTest
@@ -24,45 +25,36 @@ namespace ACS.ShoppingKart.Application.Impl.UnitTest
         [ClassInitialize]
         public static void InitClass(TestContext textContext)
         {
-            _mockFactory = new MockFactory();
-
-            _promocodeRepositoryMock = _mockFactory.CreateMock<IPromocodeRepository>();
-            _orderRepositoryMock = _mockFactory.CreateMock<IOrderRepository>();
-            _orderProductRepositoryMock = _mockFactory.CreateMock<IOrderProductRepository>();
-            _productRepositoryMock = _mockFactory.CreateMock<IProductRepository>();
-
-            _sut = new PromocodeService(
-                _promocodeRepositoryMock.MockObject,
-                _orderRepositoryMock.MockObject,
-                _orderProductRepositoryMock.MockObject,
-                _productRepositoryMock.MockObject
-                );
+            _promocodeRepositoryMock = new Mock<IPromocodeRepository>();
+            _orderRepositoryMock = new Mock<IOrderRepository>();
+            _orderProductRepositoryMock = new Mock<IOrderProductRepository>();
+            _productRepositoryMock = new Mock<IProductRepository>();
         }
 
         [TestMethod]
-        public void Given_PromocodeRequest_When_Apply_IsCalled_With_PromocodeTypeTotal_Then_Ok()
+        public void Given_PromocodeRequest_When_Apply_IsCalled_With_PromocodeIdAndOrderId_Valid_Then_Ok()
         {
             // ARRANGE
-            _promocodeRepositoryMock.Expects
-                .AtLeast(0)
-                .Method(m => m.GetById(default(String)))
-                .WithAnyArguments()
-                .WillReturn(new Promocode
-                {
-                    Id = "test",
-                    Type = PromocodeType.Total,
-                    DiscountValue = 10,
-                    IsPercentage = false
-                });
-            _orderRepositoryMock.Expects
-                .AtLeast(0)
-                .Method(m => m.GetById(default(String)))
-                .WithAnyArguments()
-                .WillReturn(new Order
-                {
-                    Id = "test",
-                    TotalPrice = 50
-                });
+            _promocodeRepositoryMock.Setup(m => m.GetById("TEST")).Returns(new Promocode
+            {
+                Id = "test",
+                Type = PromocodeType.Total,
+                DiscountValue = 10,
+                IsPercentage = false
+            });
+
+            _orderRepositoryMock.Setup(m => m.GetById("TEST")).Returns(new Order
+            {
+                Id = "test",
+                TotalPrice = 50
+            });
+
+            _sut = new PromocodeService(
+                _promocodeRepositoryMock.Object,
+                _orderRepositoryMock.Object,
+                _orderProductRepositoryMock.Object,
+                _productRepositoryMock.Object
+                );
 
             var request = new PromocodeRequest
             {
@@ -75,6 +67,39 @@ namespace ACS.ShoppingKart.Application.Impl.UnitTest
             {
                 _sut.Apply(request);
             }
+            catch (Exception)
+            {
+                // ASSERT
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        public void Given_PromocodeRequest_When_Apply_IsCalled_With_PromocodeId_NotValid_Then_Throw_PromocodeNotFoundException()
+        {
+            // ARRANGE
+            _promocodeRepositoryMock.Setup(m => m.GetById("TEST")).Throws(new PromocodeNotFoundException("TEST"));
+
+            _sut = new PromocodeService(
+                _promocodeRepositoryMock.Object,
+                _orderRepositoryMock.Object,
+                _orderProductRepositoryMock.Object,
+                _productRepositoryMock.Object
+                );
+
+            var request = new PromocodeRequest
+            {
+                OrderId = "TEST",
+                Promocode = "TEST"
+            };
+
+            // ACT
+            try
+            {
+                _sut.Apply(request);
+            }
+            catch(PromocodeNotFoundException)
+            {}
             catch (Exception)
             {
                 // ASSERT

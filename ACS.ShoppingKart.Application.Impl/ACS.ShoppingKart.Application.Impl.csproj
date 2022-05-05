@@ -9,4 +9,8 @@
     <ProjectReference Include="..\ACS.ShoppingKart.Infrastructure.Contracts\ACS.ShoppingKart.Infrastructure.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mappers\" />
+  </ItemGroup>
+
 </Project>

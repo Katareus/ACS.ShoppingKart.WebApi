@@ -1,4 +1,5 @@
-﻿using ACS.ShoppingKart.Domain.Entities;
+﻿using ACS.ShoppingKart.Application.Contracts.Exceptions;
+using ACS.ShoppingKart.Domain.Entities;
 using ACS.ShoppingKart.Infrastructure.Contracts.RepositoryContracts;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,11 @@ namespace ACS.ShoppingKart.Infrastructure.Impl.Repositories
 
         public Order GetById(string id)
         {
-            return AllOrders.FirstOrDefault(p => p.Id == id);
+            var order = AllOrders.FirstOrDefault(p => p.Id == id);
+
+            if (order == null) throw new OrderNotFoundException(id);
+
+            return order;
         }
 
         public void UpdateOrder(Order order)

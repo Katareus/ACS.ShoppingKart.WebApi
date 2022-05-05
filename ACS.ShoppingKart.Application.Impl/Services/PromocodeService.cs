@@ -25,57 +25,54 @@ namespace ACS.ShoppingKart.Application.Impl.Services
             _orderProductRepository = orderProductRepository;
             _productRepository = productRepository;
         }
+
         public void Apply(PromocodeRequest promocodeRequest)
         {
             DiscountValidations.DiscountRequestValidation(promocodeRequest);
 
-            try
+            var promocode = _promocodeRepository.GetById(promocodeRequest.Promocode);
+            var order = _orderRepository.GetById(promocodeRequest.OrderId);
+
+            switch (promocode.Type)
             {
-                var promocode = _promocodeRepository.GetById(promocodeRequest.Promocode);
-                var order = _orderRepository.GetById(promocodeRequest.OrderId);
+                case PromocodeType.Total:
 
-                switch (promocode.Type)
-                {
-                    case PromocodeType.Total:
+                    order.Discount = promocode.IsPercentage ? order.TotalPrice * promocode.DiscountValue : promocode.DiscountValue;
+                    order.FinalPrice = CalculateFinalPrice(order.TotalPrice, order.Discount);
+                    _orderRepository.UpdateOrder(order);
 
-                        order.Discount = promocode.IsPercentage ? order.TotalPrice * promocode.DiscountValue : promocode.DiscountValue;
-                        order.FinalPrice = CalculateFinalPrice(order.TotalPrice, order.Discount);
-                        _orderRepository.UpdateOrder(order);
+                    break;
 
-                        break;
+                case PromocodeType.IndividualProduct:
 
-                    case PromocodeType.IndividualProduct:
+                    var orderProductList = _orderProductRepository.GetByOrderId(promocodeRequest.OrderId);
 
-                        var orderProductList = _orderProductRepository.GetByOrderId(promocodeRequest.OrderId);
+                    foreach (var orderProduct in orderProductList)
+                    {
+                        var product = _productRepository.GetById(orderProduct.Product.Id);
 
-                        foreach (var orderProduct in orderProductList)
+                        if (product != null && promocode.DiscountKey == (int)product.Type)
                         {
-                            var product = _productRepository.GetById(orderProduct.Product.Id);
-
-                            if (product != null && promocode.DiscountKey == (int)product.Type)
-                            {
-                                order.Discount = promocode.IsPercentage ? order.TotalPrice * promocode.DiscountValue : promocode.DiscountValue;
-                                order.FinalPrice = CalculateFinalPrice(order.TotalPrice, order.Discount);
-                                _orderRepository.UpdateOrder(order);
-                            }
+                            order.Discount = promocode.IsPercentage ? order.TotalPrice * promocode.DiscountValue : promocode.DiscountValue;
+                            order.FinalPrice = CalculateFinalPrice(order.TotalPrice, order.Discount);
+                            _orderRepository.UpdateOrder(order);
                         }
+                    }
 
-                        break;
+                    break;
 
-                    case PromocodeType.ProductType:
-                        break;
+                case PromocodeType.ProductType:
+                    throw new NotImplementedException();
+                    break;
 
-                    case PromocodeType.CustomerType:
-                        break;
+                case PromocodeType.CustomerType:
+                    throw new NotImplementedException();
+                    break;
 
-                    default:
-                        break;
-                }
+                default:
+                    throw new NotImplementedException();
+                    break;
             }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }            
         }
 
         private decimal CalculateFinalPrice(decimal totalPrice, decimal discount)

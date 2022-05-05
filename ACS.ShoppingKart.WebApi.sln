@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACS.ShoppingKart.Infrastruc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACS.ShoppingKart.Infrastructure.Impl", "ACS.ShoppingKart.Infrastructure.Impl\ACS.ShoppingKart.Infrastructure.Impl.csproj", "{B5E1992A-C119-48CA-87AD-83638B0D9E22}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACS.ShoppingKart.Application.Impl.UnitTest", "ACS.ShoppingKart.Application.Impl.UnitTest\ACS.ShoppingKart.Application.Impl.UnitTest.csproj", "{7C870D4C-A59E-44BA-A9B8-C91DEAF7BD49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{B5E1992A-C119-48CA-87AD-83638B0D9E22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5E1992A-C119-48CA-87AD-83638B0D9E22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5E1992A-C119-48CA-87AD-83638B0D9E22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C870D4C-A59E-44BA-A9B8-C91DEAF7BD49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C870D4C-A59E-44BA-A9B8-C91DEAF7BD49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C870D4C-A59E-44BA-A9B8-C91DEAF7BD49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C870D4C-A59E-44BA-A9B8-C91DEAF7BD49}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +76,7 @@ Global
 		{E9213186-01CF-41BF-BABD-B089F2081D17} = {DFB0189E-9151-4B24-A3EC-EBC16F191E3D}
 		{68145F6D-AC57-48D0-BC88-C5476E8F8438} = {E9213186-01CF-41BF-BABD-B089F2081D17}
 		{B5E1992A-C119-48CA-87AD-83638B0D9E22} = {E9213186-01CF-41BF-BABD-B089F2081D17}
+		{7C870D4C-A59E-44BA-A9B8-C91DEAF7BD49} = {02A4EDD1-5E96-4D57-939C-65C46574A0AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2D0A077-8182-4A4E-B241-0B07BDE1D941}

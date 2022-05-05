@@ -1,4 +1,5 @@
-﻿using ACS.ShoppingKart.Domain.Entities;
+﻿using ACS.ShoppingKart.Application.Contracts.Exceptions;
+using ACS.ShoppingKart.Domain.Entities;
 using ACS.ShoppingKart.Infrastructure.Contracts.RepositoryContracts;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,11 @@ namespace ACS.ShoppingKart.Infrastructure.Impl.Repositories
 
         public Promocode GetById(string id)
         {
-            return AllPromocodes.FirstOrDefault(p => p.Id == id);
+            var promocode = AllPromocodes.FirstOrDefault(p => p.Id == id);
+
+            if (promocode == null) throw new PromocodeNotFoundException(id);
+
+            return promocode;
         }
     }
 }

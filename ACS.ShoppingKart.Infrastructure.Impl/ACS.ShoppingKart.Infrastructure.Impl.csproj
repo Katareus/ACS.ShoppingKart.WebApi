@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ACS.ShoppingKart.Application.Contracts\ACS.ShoppingKart.Application.Contracts.csproj" />
     <ProjectReference Include="..\ACS.ShoppingKart.Domain\ACS.ShoppingKart.Domain.csproj" />
     <ProjectReference Include="..\ACS.ShoppingKart.Infrastructure.Contracts\ACS.ShoppingKart.Infrastructure.Contracts.csproj" />
   </ItemGroup>

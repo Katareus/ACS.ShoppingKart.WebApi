@@ -1,8 +1,12 @@
+using ACS.ShoppingKart.Application.Contracts.ServiceContracts;
+using ACS.ShoppingKart.Application.Impl.Services;
+using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace ACS.ShoppingKart.WebApi
 {
@@ -39,6 +43,23 @@ namespace ACS.ShoppingKart.WebApi
             {
                 endpoints.MapControllers();
             });
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            RegisterRepositories(builder);
+
+            RegisterServices(builder);
+        }
+
+        private void RegisterRepositories(ContainerBuilder builder)
+        {
+            //builder.RegisterType<PromocodeRepository>().As<IPromocodeRepository>();
+        }
+
+        private void RegisterServices(ContainerBuilder builder)
+        {
+            builder.RegisterType<PromocodeService>().As<IPromocodeService>();
         }
     }
 }

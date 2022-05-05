@@ -1,7 +1,7 @@
 ﻿using ACS.ShoppingKart.Application.Contracts.Models;
+using ACS.ShoppingKart.Application.Contracts.ServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace ACS.ShoppingKart.WebApi.Controllers
 {
@@ -10,10 +10,12 @@ namespace ACS.ShoppingKart.WebApi.Controllers
     public class DiscountController : ControllerBase
     {
         private readonly ILogger<DiscountController> _logger;
+        private readonly IPromocodeService _promocodeService;
 
-        public DiscountController(ILogger<DiscountController> logger)
+        public DiscountController(ILogger<DiscountController> logger, IPromocodeService promocodeService)
         {
             _logger = logger;
+            _promocodeService = promocodeService;
         }
 
         [HttpPost]
@@ -22,15 +24,7 @@ namespace ACS.ShoppingKart.WebApi.Controllers
         {
             _logger.LogDebug($"Starting Discount/Apply endpoint method with promocode {discountRequest?.Promocode}");
 
-            // Validation request
-            if (string.IsNullOrEmpty(discountRequest?.Promocode))
-            {
-                throw new ArgumentException();
-            }
-
-
-
-
+            _promocodeService.Apply(discountRequest);
 
             return Ok();
         }
